@@ -42,11 +42,12 @@ class Handler {
    * @param \Composer\Script\Event $event
    */
   public function copyProfile(\Composer\Script\Event $event) {
+    $package_name = explode('/', $this->composer->getPackage()->getPrettyName())[1];
     $filesystem = new Filesystem();
     $symfonyfilesystem = new SymfonyFilesystem();
     $webroot = realpath($this->getWebRoot());
     $root = realpath(getcwd());
-    $profile_dir = $webroot . '/profiles/contrib/' . $this->composer->getPackage()->getName();
+    $profile_dir = $webroot . '/profiles/contrib/' . $package_name;
 
     $excludes = $this->getExcludesDefault();
 
