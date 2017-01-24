@@ -1,0 +1,32 @@
+{
+    "name": "daften/drupal-copy-profile",
+    "description": "Can be used as a development in an install profile to copy the current profile in a web directory, so it can be used similary as drupal-composer/drupal-project.",
+    "type": "composer-plugin",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Dieter Blomme",
+            "email": "dieterblomme@gmail.com"
+        }
+    ],
+    "minimum-stability": "RC",
+    "require": {
+        "php": ">=5.4.5",
+        "composer-plugin-api": "^1.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "DrupalComposer\\DrupalCopyProfile\\": "src/"
+        }
+    },
+    "extra": {
+        "class": "DrupalComposer\\DrupalCopyProfile\\Plugin",
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    },
+    "require-dev": {
+        "composer/composer": "dev-master",
+        "phpunit/phpunit": "^4.4.0"
+    }
+}
