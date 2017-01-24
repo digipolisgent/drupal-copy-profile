@@ -164,4 +164,45 @@ class Handler {
     return $options;
   }
 
+  /**
+   * Gets a recursiveIteratorIterator to be able to copy all files in this folder, excluding the given folder names.
+   *
+   * @param array[string] $exclude
+   *   A list of folder names to exclude. The iterator will filter against these folder names.
+   *
+   * @return \RecursiveIteratorIterator
+   */
+  private static function getRecursiveIteratorIterator($exclude = []) {
+    /**
+     * Filters based on the given $exclude array, filters out directories with the names in that array.
+     *
+     * @param SplFileInfo $file
+     *   The current item being processed for filtering.
+     * @param mixed $key
+     *   The key for the current item being processed.
+     * @param RecursiveCallbackFilterIterator $iterator
+     *   The iterator begin filtered.
+     * @return bool TRUE
+     *   if you need to recurse or if the item is acceptable
+     */
+    $filter = function ($file, $key, $iterator) use ($exclude) {
+      if ($iterator->hasChildren() && !in_array($file->getFilename(), $exclude)) {
+        return TRUE;
+      }
+      return $file->isFile();
+    };
+
+    $innerIterator = new \RecursiveDirectoryIterator(
+      getcwd(),
+      \RecursiveDirectoryIterator::SKIP_DOTS
+    );
+
+    $iterator = new \RecursiveIteratorIterator(
+      new \RecursiveCallbackFilterIterator($innerIterator, $filter),
+      \RecursiveIteratorIterator::SELF_FIRST
+    );
+
+    return $iterator;
+  }
+
 }
