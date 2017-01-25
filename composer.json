@@ -1,5 +1,5 @@
 {
-    "name": "daften/drupal-copy-profile",
+    "name": "digipolisgent/drupal-copy-profile",
     "description": "Can be used as a development in an install profile to copy the current profile in a web directory, so it can be used similary as drupal-composer/drupal-project.",
     "type": "composer-plugin",
     "license": "GPL-2.0+",
