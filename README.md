@@ -1,5 +1,17 @@
 # drupal-copy-profile
 
+[![Latest Stable Version](https://poser.pugx.org/digipolisgent/drupal-copy-profile/v/stable)](https://packagist.org/packages/digipolisgent/drupal-copy-profile)
+[![Latest Unstable Version](https://poser.pugx.org/digipolisgent/drupal-copy-profile/v/unstable)](https://packagist.org/packages/digipolisgent/drupal-copy-profile)
+[![Total Downloads](https://poser.pugx.org/digipolisgent/drupal-copy-profile/downloads)](https://packagist.org/packages/digipolisgent/drupal-copy-profile)
+[![PHP 7 ready](http://php7ready.timesplinter.ch/digipolisgent/drupal-copy-profile/develop/badge.svg)](https://travis-ci.org/digipolisgent/drupal-copy-profile)
+[![License](https://poser.pugx.org/digipolisgent/drupal-copy-profile/license)](https://packagist.org/packages/digipolisgent/drupal-copy-profile)
+
+[![Build Status](https://travis-ci.org/digipolisgent/drupal-copy-profile.svg?branch=develop)](https://travis-ci.org/digipolisgent/drupal-copy-profile)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/a0ef4f50-4a6c-4db7-9e4b-03847fab3673/mini.png)](https://insight.sensiolabs.com/projects/a0ef4f50-4a6c-4db7-9e4b-03847fab3673)
+[![Code Climate](https://codeclimate.com/github/digipolisgent/drupal-copy-profile/badges/gpa.svg)](https://codeclimate.com/github/digipolisgent/drupal-copy-profile)
+[![Test Coverage](https://codeclimate.com/github/digipolisgent/drupal-copy-profile/badges/coverage.svg)](https://codeclimate.com/github/digipolisgent/drupal-copy-profile/coverage)
+[![Issue Count](https://codeclimate.com/github/digipolisgent/drupal-copy-profile/badges/issue_count.svg)](https://codeclimate.com/github/digipolisgent/drupal-copy-profile)
+
 Composer plugin to assist in installation profile development. This allows the install 
 profile to be used as if your project is like `drupal-composer/drupal-project`, with 
 your project being an install profile to test and being the root project.
