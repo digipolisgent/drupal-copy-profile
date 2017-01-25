@@ -8,9 +8,9 @@
 namespace DigipolisGent\DrupalCopyProfile;
 
 use Composer\Composer;
+use Composer\Config;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
-use Composer\Util\Filesystem;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
 
 class Handler {
@@ -65,9 +65,7 @@ class Handler {
    */
   public function getVendorPath() {
     $config = $this->composer->getConfig();
-    $filesystem = new Filesystem();
-    $filesystem->ensureDirectoryExists($config->get('vendor-dir'));
-    $vendorPath = $filesystem->normalizePath(realpath($config->get('vendor-dir')));
+    $vendorPath = $config->get('vendor-dir', Config::RELATIVE_PATHS);
 
     return $vendorPath;
   }
