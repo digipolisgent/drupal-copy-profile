@@ -38,20 +38,27 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return array(
-      ScriptEvents::POST_INSTALL_CMD => 'copyProfile',
-      ScriptEvents::POST_UPDATE_CMD => 'copyProfile',
+      ScriptEvents::POST_INSTALL_CMD => 'postCmd',
+      ScriptEvents::POST_UPDATE_CMD => 'postCmd',
     );
   }
 
   /**
-   * Copy profile event callback. Can be used as postCmdCallback and Script callback to be put in composer scripts.
+   * Copy profile event callback.
    *
    * @param \Composer\Script\Event $event
    */
-  public function copyProfile(\Composer\Script\Event $event) {
-    if ($this->handler === null) {
-      $this->handler = new Handler($event->getComposer(), $event->getIO());
-    }
+  public function postCmd(\Composer\Script\Event $event) {
     $this->handler->copyProfile($event);
+  }
+
+  /**
+   * Script callback for copying the profile.
+   *
+   * @param \Composer\Script\Event $event
+   */
+  public static function copyProfile(\Composer\Script\Event $event) {
+    $handler = new Handler($event->getComposer(), $event->getIO());
+    $handler->copyProfile($event);
   }
 }
