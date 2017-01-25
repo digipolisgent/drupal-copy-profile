@@ -46,16 +46,16 @@ class Handler {
     $symfonyfilesystem = new SymfonyFilesystem();
     $webroot = realpath($this->getWebRoot());
     $root = realpath(getcwd());
-    $profile_dir = $webroot . '/profiles/contrib/' . $profilename;
+    $profileDir = $webroot . '/profiles/contrib/' . $profilename;
 
     $excludes = $this->getExcludesDefault();
 
     // Recreate the profile folder.
-    $symfonyfilesystem->remove($profile_dir);
-    $symfonyfilesystem->mkdir($profile_dir);
+    $symfonyfilesystem->remove($profileDir);
+    $symfonyfilesystem->mkdir($profileDir);
 
     $iterator = self::getRecursiveIteratorIterator($excludes);
-    $symfonyfilesystem->mirror($root, $profile_dir, $iterator);
+    $symfonyfilesystem->mirror($root, $profileDir, $iterator);
   }
 
   /**

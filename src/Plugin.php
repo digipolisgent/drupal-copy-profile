@@ -18,7 +18,7 @@ use Composer\Script\ScriptEvents;
 class Plugin implements PluginInterface, EventSubscriberInterface {
 
   /**
-   * @var \DrupalComposer\DrupalCopyProfile\Handler
+   * @var \DigipolisGent\DrupalCopyProfile\Handler
    */
   protected $handler;
 
@@ -50,7 +50,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
    */
   public function copyProfile(\Composer\Script\Event $event) {
     if ($this->handler === null) {
-      $handler = new Handler($event->getComposer(), $event->getIO());
+      $this->handler = new Handler($event->getComposer(), $event->getIO());
     }
     $this->handler->copyProfile($event);
   }
