@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \DrupalComposer\DrupalCopyProfile\Handler.
+ * Contains \DigipolisGent\DrupalCopyProfile\Handler.
  */
 
-namespace DrupalComposer\DrupalCopyProfile;
+namespace DigipolisGent\DrupalCopyProfile;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;

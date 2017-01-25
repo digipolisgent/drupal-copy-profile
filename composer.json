@@ -16,11 +16,11 @@
     },
     "autoload": {
         "psr-4": {
-            "DrupalComposer\\DrupalCopyProfile\\": "src/"
+            "DigipolisGent\\DrupalCopyProfile\\": "src/"
         }
     },
     "extra": {
-        "class": "DrupalComposer\\DrupalCopyProfile\\Plugin",
+        "class": "DigipolisGent\\DrupalCopyProfile\\Plugin",
         "branch-alias": {
             "dev-master": "2.0.x-dev"
         }

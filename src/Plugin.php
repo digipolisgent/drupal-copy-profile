@@ -1,10 +1,10 @@
 <?php
 /**
  * @file
- * Contains DrupalComposer\DrupalCopyProfile\Plugin.
+ * Contains DigipolisGent\DrupalCopyProfile\Plugin.
  */
 
-namespace DrupalComposer\DrupalCopyProfile;
+namespace DigipolisGent\DrupalCopyProfile;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
