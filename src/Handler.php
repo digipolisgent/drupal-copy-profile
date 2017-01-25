@@ -42,18 +42,17 @@ class Handler {
    * @param \Composer\Script\Event $event
    */
   public function copyProfile(\Composer\Script\Event $event) {
-    $package_name = explode('/', $this->composer->getPackage()->getPrettyName())[1];
-    $filesystem = new Filesystem();
+    $profilename = $this->getProfileName();
     $symfonyfilesystem = new SymfonyFilesystem();
     $webroot = realpath($this->getWebRoot());
     $root = realpath(getcwd());
-    $profile_dir = $webroot . '/profiles/contrib/' . $package_name;
+    $profile_dir = $webroot . '/profiles/contrib/' . $profilename;
 
     $excludes = $this->getExcludesDefault();
 
-    // If the profile isn't there: create the folder, else, empty it.
-    $filesystem->remove($profile_dir);
-    $filesystem->ensureDirectoryExists($profile_dir);
+    // Recreate the profile folder.
+    $symfonyfilesystem->remove($profile_dir);
+    $symfonyfilesystem->mkdir($profile_dir);
 
     $iterator = self::getRecursiveIteratorIterator($excludes);
     $symfonyfilesystem->mirror($root, $profile_dir, $iterator);
@@ -80,6 +79,18 @@ class Handler {
    */
   public function getDrupalCorePackage() {
     return $this->getPackage('drupal/core');
+  }
+
+  /**
+   * Retrieve the install profile name.
+   *
+   *  @return string
+   */
+  public function getProfileName() {
+    $options = $this->getOptions();
+    $packagename = $options['profile-name'];
+
+    return $packagename;
   }
 
   /**
@@ -160,6 +171,7 @@ class Handler {
     $options = $extra['drupal-copy-profile'] + [
         'omit-defaults' => FALSE,
         'excludes' => [],
+        'profile-name' => explode('/', $this->composer->getPackage()->getPrettyName())[1],
         'web-root' => $this->getWebRoot(),
       ];
     return $options;
