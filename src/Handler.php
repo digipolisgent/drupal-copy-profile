@@ -198,7 +198,7 @@ class Handler {
      * @return bool TRUE
      *   if you need to recurse or if the item is acceptable
      */
-    $filter = function ($file, $key, $iterator) use ($exclude) {
+    $filter = function (\SplFileInfo $file, $key, \RecursiveCallbackFilterIterator $iterator) use ($exclude) {
       if ($iterator->hasChildren() && !in_array($file->getFilename(), $exclude)) {
         return TRUE;
       }
