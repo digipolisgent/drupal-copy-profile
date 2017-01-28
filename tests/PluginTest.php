@@ -94,7 +94,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
     $this->assertFileExists($exampleInfoFile, 'Info.yml file should be installed by "drupal-copy-profile" command.');
 
     foreach (['8.0.1', '8.1.x-dev'] as $version) {
-      // We touch a profile file, so we can check the file was modified after
+      // We touch the profile file, so we can check the file was modified after
       // the copy profile.
       touch($exampleProfileFile);
       $mtime_touched = filemtime($exampleProfileFile);
@@ -105,15 +105,18 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
       $this->assertNotEquals($mtime_after, $mtime_touched, 'Profile file was modified by composer update. (' . $version . ')');
     }
 
-    // We touch a scaffold file, so we can check the file was modified after
-    // the custom commandscaffold update.
+    // We touch the profile file, so we can check the file was modified after
+    // the custom command.
     touch($exampleProfileFile);
     clearstatcache();
     $mtime_touched = filemtime($exampleProfileFile);
+    // We need to sleep, since the drupal-copy-profile command is too fast here
+    // and filemtime has an accuracy of 1 second.
+    sleep(2);
     $this->composer('drupal-copy-profile');
     clearstatcache();
     $mtime_after = filemtime($exampleProfileFile);
-    $this->assertNotEquals($mtime_after, $mtime_touched, 'Profile file was modified by custom command.');
+    $this->assertNotEquals($mtime_after, $mtime_touched, 'Profile file was modified by custom command. ' . $this->tmpDir);
   }
 
   /**
