@@ -54,7 +54,7 @@ class Handler {
     $symfonyfilesystem->remove($profileDir);
     $symfonyfilesystem->mkdir($profileDir);
 
-    $iterator = self::getRecursiveIteratorIterator($excludes);
+    $iterator = $this->getRecursiveIteratorIterator($excludes);
     $symfonyfilesystem->mirror($root, $profileDir, $iterator);
   }
 
@@ -136,7 +136,7 @@ class Handler {
    */
   protected function getNamedOptionList($optionName, $defaultFn) {
     $options = $this->getOptions();
-    $result = array();
+    $result = [];
     if (empty($options['omit-defaults'])) {
       $result = $this->$defaultFn();
     }
@@ -166,10 +166,12 @@ class Handler {
    */
   protected function getOptions() {
     $extra = $this->composer->getPackage()->getExtra() + ['drupal-copy-profile' => []];
+    $packageParts = explode('/', $this->composer->getPackage()->getPrettyName());
+    $profileName = array_key_exists(1, $packageParts) ? $packageParts[1] : 'profile';
     $options = $extra['drupal-copy-profile'] + [
         'omit-defaults' => FALSE,
         'excludes' => [],
-        'profile-name' => explode('/', $this->composer->getPackage()->getPrettyName())[1],
+        'profile-name' => $profileName,
         'web-root' => $this->getWebRoot(),
       ];
     return $options;
@@ -183,7 +185,7 @@ class Handler {
    *
    * @return \RecursiveIteratorIterator
    */
-  private static function getRecursiveIteratorIterator($exclude = []) {
+  private function getRecursiveIteratorIterator($exclude = []) {
     /**
      * Filters based on the given $exclude array, filters out directories with the names in that array.
      *

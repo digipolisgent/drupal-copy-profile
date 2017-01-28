@@ -37,10 +37,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    return array(
+    return [
       ScriptEvents::POST_INSTALL_CMD => 'postCmd',
       ScriptEvents::POST_UPDATE_CMD => 'postCmd',
-    );
+    ];
   }
 
   /**

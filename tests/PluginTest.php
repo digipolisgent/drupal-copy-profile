@@ -68,15 +68,17 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
    * Tests a simple composer install without core, but adding core later.
    */
   public function testComposerInstallAndUpdate() {
-    // TODO
-    $exampleProfileFile = $this->tmpDir . DIRECTORY_SEPARATOR . 'profiles' . DIRECTORY_SEPARATOR . 'profile' . DIRECTORY_SEPARATOR . 'profile.profile';
-    $exampleInstallFile = $this->tmpDir . DIRECTORY_SEPARATOR . 'profiles' . DIRECTORY_SEPARATOR . 'profile' . DIRECTORY_SEPARATOR . 'profile.install';
-    $exampleInfoFile = $this->tmpDir . DIRECTORY_SEPARATOR . 'profiles' . DIRECTORY_SEPARATOR . 'profile' . DIRECTORY_SEPARATOR . 'profile.info.yml';
+    $exampleProfileDir = $this->tmpDir . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'profiles' .
+      DIRECTORY_SEPARATOR . 'contrib' . DIRECTORY_SEPARATOR . 'profile';
+    $exampleProfileFile = $exampleProfileDir . DIRECTORY_SEPARATOR . 'profile.profile';
+    $exampleInstallFile = $exampleProfileDir . DIRECTORY_SEPARATOR . 'profile.install';
+    $exampleInfoFile = $exampleProfileDir . DIRECTORY_SEPARATOR . 'profile.info.yml';
     $this->assertFileNotExists($exampleProfileFile, 'Profile file should not exist.');
     $this->assertFileNotExists($exampleInstallFile, 'Install file should not exist.');
     $this->assertFileNotExists($exampleInfoFile, 'Info.yml file should not exist.');
-    $this->composer('install');
-    $this->assertFileExists($this->tmpDir . DIRECTORY_SEPARATOR . 'core', 'Drupal core is installed.');
+    $this->composer('install --verbose');
+    $this->assertFileExists($this->tmpDir . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'core',
+      'Drupal core is installed.');
     $this->assertFileExists($exampleProfileFile, 'Profile file should be copied.');
     $this->assertFileExists($exampleInstallFile, 'Install file should be copied.');
     $this->assertFileExists($exampleInfoFile, 'Info.yml file should be copied.');
@@ -86,7 +88,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
     $this->assertFileNotExists($exampleProfileFile, 'Profile file should not exist.');
     $this->assertFileNotExists($exampleInstallFile, 'Install file should not exist.');
     $this->assertFileNotExists($exampleInfoFile, 'Info.yml file should not exist.');
-    $this->composer('drupal-copy-profile');
+    $this->composer('drupal-copy-profile --verbose');
     $this->assertFileExists($exampleProfileFile, 'Profile file should be installed by "drupal-copy-profile" command.');
     $this->assertFileExists($exampleInstallFile, 'Install file should be installed by "drupal-copy-profile" command.');
     $this->assertFileExists($exampleInfoFile, 'Info.yml file should be installed by "drupal-copy-profile" command.');
@@ -162,23 +164,28 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
    * @return array
    */
   protected function composerJSONDefaults() {
-    return array(
-      'repositories' => array(
-        array(
+    return [
+      'repositories' => [
+        [
           'type' => 'vcs',
           'url' => $this->rootDir,
-        )
-      ),
-      'require' => array(
+        ]
+      ],
+      'require' => [
         'digipolisgent/drupal-copy-profile' => $this->tmpReleaseTag,
         'composer/installers' => '^1.0.20',
         'drupal/core' => '8.0.0',
-      ),
-      'scripts' => array(
+      ],
+      'scripts' => [
         'drupal-copy-profile' =>  'DigipolisGent\\DrupalCopyProfile\\Plugin::copyProfile'
-      ),
+      ],
       'minimum-stability' => 'dev',
-    );
+      'extra' => [
+        'installer-paths' => [
+          'web/core' => ['type:drupal-core'],
+        ]
+      ],
+    ];
   }
 
   /**
