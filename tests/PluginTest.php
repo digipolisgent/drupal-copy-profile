@@ -47,6 +47,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
     $this->ensureDirectoryExistsAndClear($this->tmpDir);
 
     $this->writeTestReleaseTag();
+    $this->writeComposerJSON();
     $this->writeInstallProfile();
 
     chdir($this->tmpDir);
