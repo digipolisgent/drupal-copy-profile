@@ -1,26 +1,30 @@
 <?php
 
-/**
- * @file
- * Contains \DigipolisGent\DrupalCopyProfile\Handler.
- */
-
 namespace DigipolisGent\DrupalCopyProfile;
 
 use Composer\Composer;
 use Composer\Config;
 use Composer\IO\IOInterface;
-use Composer\Package\PackageInterface;
-use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
+use Composer\Script\Event;
+use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * Class Handler for DrupalCopyProfile that will copy the profile being
+ * developed to the correct directory
+ * @package DigipolisGent\DrupalCopyProfile
+ */
 class Handler {
 
   /**
+   * The composer instance for the top-level project.
+   *
    * @var \Composer\Composer
    */
   protected $composer;
 
   /**
+   * The IOInterface to use for IO.
+   *
    * @var \Composer\IO\IOInterface
    */
   protected $io;
@@ -28,8 +32,10 @@ class Handler {
   /**
    * Handler constructor.
    *
-   * @param Composer $composer
-   * @param IOInterface $io
+   * @param \Composer\Composer $composer
+   *   The composer instance for the top-level composer.json file
+   * @param \Composer\IO\IOInterface $io
+   *   The IOInterface to use for IO.
    */
   public function __construct(Composer $composer, IOInterface $io) {
     $this->composer = $composer;
@@ -40,10 +46,11 @@ class Handler {
    * Copy profile command event to copy the profile.
    *
    * @param \Composer\Script\Event $event
+   *   The Composer Event being reacted to.
    */
-  public function copyProfile(\Composer\Script\Event $event) {
+  public function copyProfile(Event $event) {
     $profilename = $this->getProfileName();
-    $symfonyfilesystem = new SymfonyFilesystem();
+    $filesystem = new Filesystem();
     $webroot = realpath($this->getWebRoot());
     $root = realpath(getcwd());
     $profileDir = $webroot . '/profiles/contrib/' . $profilename;
@@ -51,29 +58,29 @@ class Handler {
     $excludes = $this->getExcludesDefault();
 
     // Recreate the profile folder.
-    $symfonyfilesystem->remove($profileDir);
-    $symfonyfilesystem->mkdir($profileDir);
+    $filesystem->remove($profileDir);
+    $filesystem->mkdir($profileDir);
 
     $iterator = $this->getRecursiveIteratorIterator($excludes);
-    $symfonyfilesystem->mirror($root, $profileDir, $iterator);
+    $filesystem->mirror($root, $profileDir, $iterator);
   }
 
   /**
    * Get the path to the 'vendor' directory.
    *
    * @return string
+   *   The path to the vendor directory.
    */
   public function getVendorPath() {
     $config = $this->composer->getConfig();
-    $vendorPath = $config->get('vendor-dir', Config::RELATIVE_PATHS);
-
-    return $vendorPath;
+    return $config->get('vendor-dir', Config::RELATIVE_PATHS);
   }
 
   /**
    * Look up the Drupal core package object.
    *
-   * @return PackageInterface
+   * @return \Composer\Package\PackageInterface
+   *   The drupal/core Package object.
    */
   public function getDrupalCorePackage() {
     return $this->getPackage('drupal/core');
@@ -82,28 +89,26 @@ class Handler {
   /**
    * Retrieve the install profile name.
    *
-   *  @return string
+   * @return string
+   *   The name of the install profile being installed
    */
   public function getProfileName() {
     $options = $this->getOptions();
-    $packagename = $options['profile-name'];
-
-    return $packagename;
+    return $options['profile-name'];
   }
 
   /**
    * Retrieve the path to the web root.
    *
-   *  @return string
+   * @return string
+   *   The path of the web root, being where drupal/core is installed.
    */
   public function getWebRoot() {
     $drupalCorePackage = $this->getDrupalCorePackage();
     $installationManager = $this->composer->getInstallationManager();
     $corePath = $installationManager->getInstallPath($drupalCorePackage);
     // Webroot is the parent path of the drupal core installation path.
-    $webroot = dirname($corePath);
-
-    return $webroot;
+    return dirname($corePath);
   }
 
   /**
@@ -112,7 +117,8 @@ class Handler {
    * @param string $name
    *   Name of the package to get from the current composer installation.
    *
-   * @return PackageInterface
+   * @return \Composer\Package\PackageInterface
+   *   The Package object with the name being requested.
    */
   protected function getPackage($name) {
     return $this->composer->getRepositoryManager()->getLocalRepository()->findPackage($name, '*');
@@ -122,6 +128,8 @@ class Handler {
    * Retrieve excludes from optional "extra" configuration.
    *
    * @return array
+   *   The excludes defined in "extra" configuration in the composer.json being
+   *   used.
    */
   protected function getExcludes() {
     return $this->getNamedOptionList('excludes', 'getExcludesDefault');
@@ -132,7 +140,9 @@ class Handler {
    * Respects 'omit-defaults', and either includes or does not include the
    * default values, as requested.
    *
-   * @return array
+   * @return array[]
+   *   The named options defined in "extra" configuration in the composer.json
+   *   being used merged with the defaults, unless "omit-defaults" is true.
    */
   protected function getNamedOptionList($optionName, $defaultFn) {
     $options = $this->getOptions();
@@ -140,13 +150,15 @@ class Handler {
     if (empty($options['omit-defaults'])) {
       $result = $this->$defaultFn();
     }
-    $result = array_merge($result, (array) $options[$optionName]);
 
-    return $result;
+    return array_merge($result, (array) $options[$optionName]);
   }
 
   /**
    * Holds default excludes.
+   *
+   * @return string[]
+   *   The default excludes.
    */
   protected function getExcludesDefault() {
     $common = [
@@ -163,31 +175,36 @@ class Handler {
    * Retrieve excludes from optional "extra" configuration.
    *
    * @return array
+   *   The full list of options from composer.json merged with some default
+   *   values.
    */
   protected function getOptions() {
     $extra = $this->composer->getPackage()->getExtra() + ['drupal-copy-profile' => []];
     $packageParts = explode('/', $this->composer->getPackage()->getPrettyName());
     $profileName = array_key_exists(1, $packageParts) ? $packageParts[1] : 'profile';
-    $options = $extra['drupal-copy-profile'] + [
+    return $extra['drupal-copy-profile'] + [
         'omit-defaults' => FALSE,
         'excludes' => [],
         'profile-name' => $profileName,
         'web-root' => $this->getWebRoot(),
       ];
-    return $options;
   }
 
   /**
-   * Gets a recursiveIteratorIterator to be able to copy all files in this folder, excluding the given folder names.
+   * Gets a recursiveIteratorIterator to be able to copy all files in this
+   * folder, excluding the given folder names.
    *
-   * @param array[string] $exclude
-   *   A list of folder names to exclude. The iterator will filter against these folder names.
+   * @param string[] $exclude
+   *   A list of folder names to exclude. The iterator will filter against these
+   *   folder names.
    *
    * @return \RecursiveIteratorIterator
+   *   The recursive iterator used to loop over the profile source files.
    */
   private function getRecursiveIteratorIterator($exclude = []) {
     /**
-     * Filters based on the given $exclude array, filters out directories with the names in that array.
+     * Filters based on the given $exclude array, filters out directories with
+     * the names in that array.
      *
      * @param SplFileInfo $file
      *   The current item being processed for filtering.
