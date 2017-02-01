@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \DigipolisGent\DrupalCopyProfile\Tests\PluginTest.
- */
-
 namespace DigipolisGent\DrupalCopyProfile\Tests;
 
 use Composer\Util\Filesystem;
@@ -17,21 +12,26 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * @var \Composer\Util\Filesystem
+   *   The Filesystem to use to manipulate files used for testing.
    */
   protected $fs;
 
   /**
    * @var string
+   *   A temporary directory where to perform the actual tests, execute the
+   *   commands.
    */
   protected $tmpDir;
 
   /**
    * @var string
+   *   The root directory of this project.
    */
   protected $rootDir;
 
   /**
    * @var string
+   *   A temporary tag to be able to use this code when running the tests.
    */
   protected $tmpReleaseTag;
 
@@ -55,8 +55,6 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * tearDown
-   *
-   * @return void
    */
   public function tearDown()
   {
@@ -98,7 +96,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
       // the copy profile.
       touch($exampleProfileFile);
       $mtime_touched = filemtime($exampleProfileFile);
-      // Requiring a newer version triggers "composer update"
+      // Requiring a newer version triggers "composer update".
       $this->composer('require --update-with-dependencies drupal/core:"' . $version .'"');
       clearstatcache();
       $mtime_after = filemtime($exampleProfileFile);
@@ -124,10 +122,9 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
    */
   protected function writeInstallProfile() {
     $contents = '<?php';
-    // Write composer.json.
+    // Write profile.profile.
     file_put_contents($this->tmpDir . '/profile.profile', $contents);
-    $contents = '<?php';
-    // Write composer.json.
+    // Write profile.install.
     file_put_contents($this->tmpDir . '/profile.install', $contents);
     $infoYaml = [
       'name' => 'Profile',
@@ -138,7 +135,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
       'dependencies' => [],
     ];
     $infoYaml = Yaml::dump($infoYaml);
-    // Write composer.json.
+    // Write profile.info.yml.
     file_put_contents($this->tmpDir . '/profile.info.yml', $infoYaml);
   }
 
@@ -164,7 +161,8 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
   /**
    * Provides the default composer.json data.
    *
-   * @return array
+   * @return array[]
+   *   The default composer.json data as an array.
    */
   protected function composerJSONDefaults() {
     return [
@@ -195,7 +193,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
    * Wrapper for the composer command.
    *
    * @param string $command
-   *   Composer command name, arguments and/or options
+   *   Composer command name, arguments and/or options.
    */
   protected function composer($command) {
     chdir($this->tmpDir);
@@ -208,7 +206,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
   /**
    * Wrapper for git command in the root directory.
    *
-   * @param $command
+   * @param string $command
    *   Git command name, arguments and/or options.
    */
   protected function git($command) {
@@ -223,6 +221,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
    * Makes sure the given directory exists and has no content.
    *
    * @param string $directory
+   *   The directory path to make sure it exists and is clear.
    */
   protected function ensureDirectoryExistsAndClear($directory) {
     if (is_dir($directory)) {
