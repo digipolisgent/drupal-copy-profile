@@ -10,7 +10,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class Handler for DrupalCopyProfile that will copy the profile being
- * developed to the correct directory
+ * developed to the correct directory.
  * @package DigipolisGent\DrupalCopyProfile
  */
 class Handler {
@@ -33,7 +33,7 @@ class Handler {
    * Handler constructor.
    *
    * @param \Composer\Composer $composer
-   *   The composer instance for the top-level composer.json file
+   *   The composer instance for the top-level composer.json file.
    * @param \Composer\IO\IOInterface $io
    *   The IOInterface to use for IO.
    */
@@ -90,7 +90,7 @@ class Handler {
    * Retrieve the install profile name.
    *
    * @return string
-   *   The name of the install profile being installed
+   *   The name of the install profile being installed.
    */
   public function getProfileName() {
     $options = $this->getOptions();
@@ -140,7 +140,7 @@ class Handler {
    * Respects 'omit-defaults', and either includes or does not include the
    * default values, as requested.
    *
-   * @return array[]
+   * @return array
    *   The named options defined in "extra" configuration in the composer.json
    *   being used merged with the defaults, unless "omit-defaults" is true.
    */

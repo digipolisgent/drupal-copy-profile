@@ -161,7 +161,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase {
   /**
    * Provides the default composer.json data.
    *
-   * @return array[]
+   * @return array
    *   The default composer.json data as an array.
    */
   protected function composerJSONDefaults() {
