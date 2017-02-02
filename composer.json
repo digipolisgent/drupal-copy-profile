@@ -27,6 +27,7 @@
     },
     "require-dev": {
         "composer/composer": "dev-master",
-        "phpunit/phpunit": "^4.4.0"
+        "phpunit/phpunit": "^4.4.0",
+        "codeclimate/php-test-reporter": "dev-master"
     }
 }

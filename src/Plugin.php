@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains DigipolisGent\DrupalCopyProfile\Plugin.
- */
 
 namespace DigipolisGent\DrupalCopyProfile;
 
@@ -10,6 +6,7 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 
 /**
@@ -19,6 +16,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
   /**
    * @var \DigipolisGent\DrupalCopyProfile\Handler
+   *   The handler to use to actually copy the profile.
    */
   protected $handler;
 
@@ -47,8 +45,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
    * Copy profile event callback.
    *
    * @param \Composer\Script\Event $event
+   *   The Composer Event being reacted to.
    */
-  public function postCmd(\Composer\Script\Event $event) {
+  public function postCmd(Event $event) {
     $this->handler->copyProfile($event);
   }
 
@@ -56,8 +55,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
    * Script callback for copying the profile.
    *
    * @param \Composer\Script\Event $event
+   *   The Composer Event being reacted to.
    */
-  public static function copyProfile(\Composer\Script\Event $event) {
+  public static function copyProfile(Event $event) {
     $handler = new Handler($event->getComposer(), $event->getIO());
     $handler->copyProfile($event);
   }
