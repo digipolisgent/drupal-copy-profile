@@ -12,31 +12,33 @@
 [![Test Coverage](https://codeclimate.com/github/digipolisgent/drupal-copy-profile/badges/coverage.svg)](https://codeclimate.com/github/digipolisgent/drupal-copy-profile/coverage)
 [![Issue Count](https://codeclimate.com/github/digipolisgent/drupal-copy-profile/badges/issue_count.svg)](https://codeclimate.com/github/digipolisgent/drupal-copy-profile)
 
-Composer plugin to assist in installation profile development. This allows the install 
-profile to be used as if your project is like `drupal-composer/drupal-project`, with 
+Composer plugin to assist in installation profile development. This allows the install
+profile to be used as if your project is like `drupal-composer/drupal-project`, with
 your project being an install profile to test and being the root project.
 
 ## Credits
 
-This project is basically a rip-off of `drupal-composer/drupal-scaffold`. Thanks to the 
-developers of that package for the inspiration.
+This project is basically a rip-off of `drupal-composer/drupal-scaffold`. Thanks
+to the developers of that package for the inspiration.
 
 ## Usage
 
-Run `composer require --dev digipolisgent/drupal-copy-profile:dev-master` in your composer
-project before installing or updating `drupal/core`.
+Run `composer require --dev digipolisgent/drupal-copy-profile:dev-master` in your
+composer project before installing or updating `drupal/core`.
 
-Once drupal-copy-profile is required by your project, it will automatically copy the 
-install profile in the project directory to the correct profiles directory in an installed 
-drupal site.
+Once drupal-copy-profile is required by your project, it will automatically copy
+the install profile in the project directory to the correct profiles directory in
+an installed drupal site.
 
-You can use this easily by requiring these packages in the `require-dev` section of the 
-composer.json.
+You can use this easily by requiring these packages in the `require-dev` section
+of the composer.json.
+
 * drupal/core
 * composer/installers
 * drupal-composer/drupal-scaffold
 
 You'll also have to configure the drupal-scaffold paths as follows:
+
 ```
     "extra": {
         "installer-paths": {
@@ -69,35 +71,37 @@ of your root `composer.json`.
   }
 }
 ```
+
 With the `drupal-copy-profile` option `excludes`, you can provide additional paths
-that should not be copied from the root project. The plugin provides these default 
+that should not be copied from the root project. The plugin provides these default
 includes:
+
 ```
 web-root
 vendor-path
 .git
 ```
 
-`web-root` is configurable through the options, but defaults to the location where 
-`drupal/core` is installed. `vendor-path` is taken from the composer config and 
+`web-root` is configurable through the options, but defaults to the location where
+`drupal/core` is installed. `vendor-path` is taken from the composer config and
 defaults to `vendor`
 
-When setting `omit-defaults` to `true`, the default excludes will not be used; in 
-this instance, only those files explicitly listed in the `excludes` options will 
-be considered. If `omit-defaults` is `false` (the default), then any items listed 
+When setting `omit-defaults` to `true`, the default excludes will not be used; in
+this instance, only those files explicitly listed in the `excludes` options will
+be considered. If `omit-defaults` is `false` (the default), then any items listed
 in `excludes` will be in addition to the usual defaults.
 
-The `profile-name` option allows you to set the install profile name. It defaults to 
-the project name of the root package (the second part of the package name)
+The `profile-name` option allows you to set the install profile name. It defaults
+to the project name of the root package (the second part of the package name)
 
 The `web-root` option allows you to set an alternative path to copy the profile to.
 It defaults to the install location of `drupal/core`, which should be fine.
 
 ## Custom command
 
-The plugin by default is executed on each composer install and update. If you want to 
-call it manually, you can add the command callback to the `scripts`-section of your 
-root `composer.json`, like this:
+The plugin by default is executed on each composer install and update. If you want
+to call it manually, you can add the command callback to the `scripts`-section of
+your root `composer.json`, like this:
 
 ```json
 {
@@ -107,5 +111,5 @@ root `composer.json`, like this:
 }
 ```
 
-After that you can manually copy the profile according to your configuration by 
+After that you can manually copy the profile according to your configuration by
 using `composer drupal-scaffold`.
