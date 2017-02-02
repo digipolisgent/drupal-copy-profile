@@ -242,7 +242,11 @@ class Handler
          * @return bool TRUE
          *   if you need to recurse or if the item is acceptable
          */
-        $filter = function (\SplFileInfo $file, $key, \Iterator $iterator) use (
+        $filter = function (
+            \SplFileInfo $file,
+            $key,
+            \Iterator $iterator
+        ) use (
             $exclude
         ) {
             if ($iterator->hasChildren() && !in_array(
