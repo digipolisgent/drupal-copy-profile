@@ -197,8 +197,8 @@ class Handler
      */
     protected function getOptions()
     {
-        $extra = $this->composer->getPackage()->getExtra(
-            ) + ['drupal-copy-profile' => []];
+        $extra = $this->composer->getPackage()->getExtra() +
+            ['drupal-copy-profile' => []];
         $packageParts = explode(
             '/',
             $this->composer->getPackage()->getPrettyName()
@@ -209,11 +209,11 @@ class Handler
         ) ? $packageParts[1] : 'profile';
 
         return $extra['drupal-copy-profile'] + [
-                'omit-defaults' => false,
-                'excludes' => [],
-                'profile-name' => $profileName,
-                'web-root' => $this->getWebRoot(),
-            ];
+            'omit-defaults' => false,
+            'excludes' => [],
+            'profile-name' => $profileName,
+            'web-root' => $this->getWebRoot(),
+        ];
     }
 
     /**
@@ -249,7 +249,8 @@ class Handler
         ) use (
             $exclude
         ) {
-            if ($iterator->hasChildren() && !in_array(
+            if ($iterator->hasChildren() &&
+                !in_array(
                     $file->getFilename(),
                     $exclude
                 )
@@ -272,5 +273,4 @@ class Handler
 
         return $iterator;
     }
-
 }
