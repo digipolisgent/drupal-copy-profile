@@ -134,7 +134,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
             'Info.yml file should be installed by "drupal-copy-profile" command.'
         );
 
-        foreach (['8.0.1', '8.1.x-dev'] as $version) {
+        foreach (['8.3.1', '8.3.2'] as $version) {
             // We touch the profile file, so we can check the file was modified after
             // the copy profile.
             touch($exampleProfileFile);
@@ -237,8 +237,8 @@ class PluginTest extends \PHPUnit_Framework_TestCase
             ],
             'require' => [
                 'digipolisgent/drupal-copy-profile' => $this->tmpReleaseTag,
-                'composer/installers' => '^1.0.20',
-                'drupal/core' => '8.0.0',
+                'composer/installers' => '^1.3.0',
+                'drupal/core' => '~8.3.0',
             ],
             'scripts' => [
                 'drupal-copy-profile' => 'DigipolisGent\\DrupalCopyProfile\\Plugin::copyProfile',
